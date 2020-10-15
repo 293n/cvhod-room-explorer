@@ -1,0 +1,112 @@
+html{
+    height: calc(160px * 10);
+}
+body {
+    width: calc(240px * 13);
+    margin: 0;
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    margin: 30px auto;
+}
+
+h1 {
+    font-family: monospace;
+    text-align: center;
+    font-size: 3em;
+    line-height: 160px;
+    margin: 0;
+}
+
+#canvas{
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    filter:brightness(100%);
+    width: calc(240px * 9);
+}
+a{
+    padding:0;
+    margin:0;
+    text-decoration: none;
+}
+.imageBox {
+    padding: 0;
+    margin: 0;
+    /* border: solid 3px #515151; */
+    width: 240px;
+    height: 160px;
+    box-sizing: border-box;
+    display: flex;
+    transition: 0.5s;
+    border-radius: 1px;
+    border: none;
+}
+
+.imageBox:hover {
+    border: solid 10px #FF8000;
+}
+
+.showRoomID{
+    box-sizing: border-box;
+    font-family: monospace;
+    color: white;
+    font-size: 2em;
+    margin: auto 0 0 0;
+    padding: 5px;
+    width: 100%;
+    text-decoration: none;
+    text-shadow    : 
+    2px  2px 1px #515151,
+   -2px  2px 1px #515151,
+    2px -2px 1px #515151,
+   -2px -2px 1px #515151,
+    2px  0px 1px #515151,
+    0px  2px 1px #515151,
+   -2px  0px 1px #515151,
+    0px -2px 1px #515151; 
+}
+
+.maps{
+    margin: 30px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap:wrap;
+    box-sizing:border-box;
+}
+.map{
+    max-width: calc(12px * 65);
+    margin:30px;
+    padding:0;
+    display: flex;
+    flex-wrap: wrap;
+
+}
+.mapBlock{
+    box-sizing: border-box;
+    width: 12px;
+    height: 12px;
+    border-width:1px;
+    border-color:#dddddd;
+    transition: 0.3s;
+}
+
+.mapBlock:hover{
+    background-color: #DDDDCC;
+}
+
+.mapUndefined{
+    background-color: #313131;
+    border:none;
+}
+.mapCurrentRoom {
+    background-color: #FF5151;
+}
+.mapAdefined{
+    background-color: #515181;
+}
+.mapBdefined{
+    background-color: #518151;
+}
