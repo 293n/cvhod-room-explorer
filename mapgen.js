@@ -22,7 +22,7 @@ selection.removeAllRanges();
 const promise = Promise.all([getCSV(RoomTable, RoomTableStr, './table/' + RoomID + '.csv'),
                              getCSV(MapATable, MapATableStr, './table/mapA.csv'),
                              getCSV(MapBTable, MapBTableStr, './table/mapB.csv')]);
-promise.then((xhrArray) => initialize());
+promise.then((xhrArray) => setTimeout(initialize(),300));
 
 
 function zeroPadding(value, length){
@@ -154,12 +154,13 @@ function initialize(){
             // check for adjascent
             let s_start = Math.max(i-1, 1);
             let t_start = Math.max(j-1, 0);
-            let s_end = Math.min(i+1, 11);
+            let s_end = Math.min(i+1, 10);
             let t_end = Math.min(j+1, 9);
             let NextInBound = false;
             for (let s = s_start; s <= s_end; s++){
                 for (let t = t_start; t <= t_end; t++){
                     NextInBound = parseInt(RoomTable[s+1][t],16) >= 0x80000000;
+                    console.log(s,t);
                     if (NextInBound == true){
                         break;
                     }
