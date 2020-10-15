@@ -160,7 +160,6 @@ function initialize(){
             for (let s = s_start; s <= s_end; s++){
                 for (let t = t_start; t <= t_end; t++){
                     NextInBound = parseInt(RoomTable[s+1][t],16) >= 0x80000000;
-                    console.log(s,t);
                     if (NextInBound == true){
                         break;
                     }
