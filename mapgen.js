@@ -22,124 +22,92 @@ selection.removeAllRanges();
 const promise = Promise.all([getCSV(RoomTable, RoomTableStr, './table/' + RoomID + '.csv'),
                              getCSV(MapATable, MapATableStr, './table/mapA.csv'),
                              getCSV(MapBTable, MapBTableStr, './table/mapB.csv')]);
-promise.then((xhrArray) => setTimeout(initialize(),300));
+promise.then((xhrArray) => initialize());
 
 
 function zeroPadding(value, length){
     return value = ('00000000' + value).slice(-length);
 }
 
+// 
+function displayMap(MapTable, mapID){
+    for (let i = 0; i < MapTable.length-1; i++){
+        for (let j = 0; j < MapTable[0].length-1; j++){
+            let id = mapID + 'id' + zeroPadding(i.toString(), 2) + zeroPadding(j.toString(),2);
+
+            let div = document.createElement('div');
+                div.id = "div" + id;
+                div.className = "mapBlockContainer";
+
+            div.addEventListener("mouseover", function(e){
+                let childImg = this.firstElementChild.nextSibling;
+                childImg.src = childImg.dataset.src;
+            },false);
+
+            let link = document.createElement('a');
+                link.href = location.pathname +"?" + MapTable[i][j];
+                link.id   = "link" + id;
+                link.className = "mapBlock";
+
+            let balloon = document.createElement('img');
+                balloon.className = "balloon";
+                balloon.id = "balloon" + id;
+                balloon.dataset.src = "";
+
+            if (MapTable[i][j] === "00000000"){
+                link.gridArea = link.id;
+                link.href = "javascript:void(0)";
+                link.className = link.className + " mapUndefined";
+            }else{
+                if (MapTable[i][j] === RoomID){
+                    link.gridArea = MapTable[i][j];
+                    link.className = link.className + " mapCurrentRoom";
+                    link.className = link.className + " " + MapTable[i][j];
+                }else{
+                    link.gridArea = MapTable[i][j];
+                    link.className = link.className + " " + mapID + "defined";
+                    link.className = link.className + " " + MapTable[i][j];
+                }
+                balloon.dataset.src = "./image/" + MapTable[i][j] + ".png";
+                console.log(balloon.src);
+                // draw border lines in map
+                if (i >= 1 && j >= 1) {
+                    if (MapTable[i][j] !== MapTable[i-1][j]){
+                        link.style.borderTop = "solid";
+                        link.style.borderWidth = "1px";
+                        link.style.borderColor = "#DDDDDD";
+                    }
+                    if (MapTable[i][j] !== MapTable[i][j+1]){
+                        link.style.borderRight = "solid";
+                        link.style.borderWidth = "1px";
+                        link.style.borderColor = "#DDDDDD";
+                    }
+                    if (MapTable[i][j] !== MapTable[i+1][j]){
+                        link.style.borderBottom = "solid";
+                        link.style.borderWidth = "1px";
+                        link.style.borderColor = "#DDDDDD";
+                    }
+                    if (MapTable[i][j] !== MapTable[i][j-1]){
+                        link.style.borderLeft = "solid";
+                        link.style.borderWidth = "1px";
+                        link.style.borderColor = "#DDDDDD";
+                    }
+                }
+            }
+            document.getElementById(mapID).appendChild(div);
+            document.getElementById(div.id).appendChild(link);
+            document.getElementById(div.id).appendChild(balloon);
+        }
+    }
+}
 
 // display maps and rooms
 function initialize(){
     let digit = 8;
     document.getElementById('RoomID').innerHTML = RoomID.toString();
     //document.getElementById('mapA').style.gridTemplateAreas = MapATableStr;
-
-    // display mapA
-    for (let i = 0; i < MapATable.length-1; i++){
-        for (let j = 0; j < MapATable[0].length-1; j++){
-            let id = 'mapAid' + zeroPadding(i.toString(), 2) + zeroPadding(j.toString(),2);
-
-            let link = document.createElement('a');
-            link.href = location.pathname +"?" + MapATable[i][j];
-            link.id   = id;
-            link.className = "mapBlock";
-
-            if (MapATable[i][j] === "00000000"){
-                link.gridArea = link.id;
-                link.href = "javascript:void(0)";
-                link.className = link.className + " mapUndefined";
-            }else{
-                if (MapATable[i][j] === RoomID){
-                    link.gridArea = MapATable[i][j];
-                    link.className = link.className + " mapCurrentRoom";
-                    link.className = link.className + " " + MapATable[i][j];
-                }else{
-                    link.gridArea = MapATable[i][j];
-                    link.className = link.className + " mapAdefined";
-                    link.className = link.className + " " + MapATable[i][j];
-                }
-                if (i >= 1 && j >= 1) {
-                    if (MapATable[i][j] !== MapATable[i-1][j]){
-                        link.style.borderTop = "solid";
-                        link.style.borderWidth = "1px";
-                        link.style.borderColor = "#DDDDDD";
-                    }
-                    if (MapATable[i][j] !== MapATable[i][j+1]){
-                        link.style.borderRight = "solid";
-                        link.style.borderWidth = "1px";
-                        link.style.borderColor = "#DDDDDD";
-                    }
-                    if (MapATable[i][j] !== MapATable[i+1][j]){
-                        link.style.borderBottom = "solid";
-                        link.style.borderWidth = "1px";
-                        link.style.borderColor = "#DDDDDD";
-                    }
-                    if (MapATable[i][j] !== MapATable[i][j-1]){
-                        link.style.borderLeft = "solid";
-                        link.style.borderWidth = "1px";
-                        link.style.borderColor = "#DDDDDD";
-                    }
-                }
-            }
-
-            document.getElementById('mapA').appendChild(link);
-        }
-    }
-
-    // display mapB
-    for (let i = 0; i < MapBTable.length-1; i++){
-        for (let j = 0; j < MapBTable[0].length-1; j++){
-            let id = 'mapBid' + zeroPadding(i.toString(), 2) + zeroPadding(j.toString(),2);
-
-            let link = document.createElement('a');
-            link.href = location.pathname +"?" + MapBTable[i][j];
-            link.id   = id;
-            link.className = "mapBlock";
-
-            if (MapBTable[i][j] === "00000000"){
-                link.gridArea = link.id;
-                link.href = "javascript:void(0)";
-                link.className = link.className + " mapUndefined";
-            }else{
-                if (MapBTable[i][j] === RoomID){
-                    link.gridArea = MapBTable[i][j];
-                    link.className = link.className + " mapCurrentRoom";
-                    link.className = link.className + " " + MapBTable[i][j];
-                }else{
-                    link.gridArea = MapBTable[i][j];
-                    link.className = link.className + " mapBdefined";
-                    link.className = link.className + " " + MapBTable[i][j];
-                }
-                if(i >=1 && j >= 1){
-                    if (MapBTable[i][j] !== MapBTable[i-1][j]){
-                        link.style.borderTop = "solid";
-                        link.style.borderWidth = "1px";
-                        link.style.borderColor = "#DDDDDD";
-                    }
-                    if (MapBTable[i][j] !== MapBTable[i][j+1]){
-                        link.style.borderRight = "solid";
-                        link.style.borderWidth = "1px";
-                        link.style.borderColor = "#DDDDDD";
-                    }
-                    if (MapBTable[i][j] !== MapBTable[i+1][j]){
-                        link.style.borderBottom = "solid";
-                        link.style.borderWidth = "1px";
-                        link.style.borderColor = "#DDDDDD";
-                    }
-                    if (MapBTable[i][j] !== MapBTable[i][j-1]){
-                        link.style.borderLeft = "solid";
-                        link.style.borderWidth = "1px";
-                        link.style.borderColor = "#DDDDDD";
-                    }
-                }
-            }
-
-            document.getElementById('mapB').appendChild(link);
-        }
-    }
-
+    displayMap(MapATable, 'mapA');
+    displayMap(MapBTable, 'mapB');
 
     // display rooms
     for (let i = 0; i < 11; i++){
@@ -181,8 +149,8 @@ function initialize(){
                 room.id = "room" + id;
 
             if (NextRoomID === "00000000"){
-                div.style.backgroundColor = "#000000";
-                room.style.backgroundColor = "#000000";
+                div.style.backgroundColor = "#313131";
+                room.style.backgroundColor = "#313131";
                 room.innerHTML = 'Crash';
 
             }else{

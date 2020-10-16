@@ -53,7 +53,7 @@ a{
     box-sizing: border-box;
     font-family: monospace;
     color: white;
-    font-size: 2em;
+    font-size: 1.8em;
     margin: auto 0 0 0;
     padding: 5px;
     width: 100%;
@@ -82,6 +82,7 @@ a{
     padding:0;
     display: flex;
     flex-wrap: wrap;
+    position: relative;
 
 }
 .mapBlock{
@@ -91,6 +92,33 @@ a{
     border-width:1px;
     border-color:#dddddd;
     transition: 0.3s;
+    position: relative;
+    z-index: 1;
+}
+
+.mapBlockContainer{
+    width: auto;
+    height: auto;
+    display: flex;
+    border: none;
+}
+
+.mapBlockContainer:hover .balloon{
+    display: flex;
+    opacity: 0.8;
+    visibility: visible;
+}
+
+.balloon{
+    border:none;
+    position: absolute;
+    padding: 2px;
+    background-color: #717171;
+    left: 10px;
+    top: 10px;
+    z-index: 2;
+    opacity: 0;
+    visibility: hidden;
 }
 
 .mapBlock:hover{
