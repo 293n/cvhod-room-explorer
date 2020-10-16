@@ -5,10 +5,12 @@ let RoomID = location.href.split("?")[1];
 let RoomTable = JSON.parse(JSON.stringify((new Array(11)).fill((new Array(8)).fill(""))));
 let MapATable = JSON.parse(JSON.stringify((new Array(41)).fill((new Array(65)).fill(""))));
 let MapBTable = JSON.parse(JSON.stringify((new Array(41)).fill((new Array(65)).fill(""))));
+let toRoomTable = JSON.parse(JSON.stringify((new Array(100)).fill((new Array(4)).fill(""))));
 
 let RoomTableStr = new Array();
 let MapATableStr = new Array();
 let MapBTableStr = new Array();
+let toRoomTableStr = new Array();
 
 // initial values of RoomID
 if (!(parseInt(RoomID, 16) > 0)) {
@@ -21,7 +23,8 @@ selection.removeAllRanges();
 
 const promise = Promise.all([getCSV(RoomTable, RoomTableStr, './table/' + RoomID + '.csv'),
                              getCSV(MapATable, MapATableStr, './table/mapA.csv'),
-                             getCSV(MapBTable, MapBTableStr, './table/mapB.csv')]);
+                             getCSV(MapBTable, MapBTableStr, './table/mapB.csv'),
+                             getCSV(toRoomTable, toRoomTableStr, './table/to' + RoomID + '.csv')]);
 promise.then((xhrArray) => initialize());
 
 
@@ -101,6 +104,23 @@ function displayMap(MapTable, mapID){
     }
 }
 
+function displayToBox(table){
+    let i=0;
+    while (table[i][0]!==""){
+        let link = document.createElement('a');
+            link.id = 'toimglinkid' + zeroPadding(i, 2);
+            link.href =  link.href = location.pathname +"?" + table[i][0];
+
+        let img = document.createElement('img');
+            img.id = "toimgid" + zeroPadding(i, 2);
+            img.src = "./image/" + table[i][0] + ".png";
+            img.className = "toImg";
+        document.getElementById('toBox').appendChild(link);
+        document.getElementById(link.id).appendChild(img);
+        i++;
+    }
+}
+
 // display maps and rooms
 function initialize(){
     let digit = 8;
@@ -108,6 +128,7 @@ function initialize(){
     //document.getElementById('mapA').style.gridTemplateAreas = MapATableStr;
     displayMap(MapATable, 'mapA');
     displayMap(MapBTable, 'mapB');
+    displayToBox(toRoomTable);
 
     // display rooms
     for (let i = 0; i < 11; i++){
