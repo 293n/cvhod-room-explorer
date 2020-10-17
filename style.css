@@ -103,7 +103,7 @@ main{
 h1 {
     position:absolute;
     left: 16px;
-    top: 60px;
+    top: 50px;
     display:block;
     color: white;
     font-family: 'Times New Roman';
@@ -114,6 +114,7 @@ h1 {
     padding: 10px 30px;
     border-radius: 9999px;
     background-color: #4080C080;
+    width: 150px;
 }
 
 #canvas{
