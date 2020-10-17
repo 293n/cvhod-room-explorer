@@ -5,25 +5,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=0.5">
     <title>CVHoD: Room Explorer</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="/icomoon/style.css" rel="stylesheet">
+
 
 </head>
 <body>
-    <div id="maps">
-        <h1 id="RoomID">
-            
-        </h1>
-        <div class="map" id="mapA">
-
+    <header class="headerStyle contentShadow">
+        <div class="headerContainer">
+            <div class="pageTitle">
+                CVHoD: Room Explorer
+            </div>
+            <div class="iconContainer">
+                <a href="https://github.com/293n/cvhod-room-explorer" class="iconLink">
+                    <span class="iconStyle githubIcon">
+                        
+                    </span>
+                </a>
+                <a href="https://twitter.com/norriettie" class="iconLink">
+                    <span class="iconStyle twitterIcon">
+                    
+                    </span>
+                </a>
+                <a href="https://www.youtube.com/channel/UCdPU_WWF9yyIbklnkDsm6VQ" class="iconLink">
+                    <span class="iconStyle youtubeIcon">
+        
+                    </span>
+                </a>
+                <a href="https://www.nicovideo.jp/user/29217" class="iconLink">
+                    <span class="iconStyle nicoIcon">
+        
+                    </span>
+                </a>
+                <a class="iconLink">
+                    <span class="iconStyle discordIcon">
+        
+                    </span>
+                </a>
+            </div>
         </div>
-        <div class="map" id="mapB">
-            
+    </header>
+    <main>
+        <div class="mainContainer">
+            <div id="maps">
+                <h1 id="RoomID">
+                    
+                </h1>
+                <div class="map contentShadow" id="mapA">
+        
+                </div>
+                <div class="map contentShadow" id="mapB">
+                    
+                </div>
+                <div id="toBox">
+                    
+                </div>
+            </div>
+    
+            <div id="canvas" class="contentShadow">
+                <script type="text/javascript" src="mapgen.js"></script>
+            </div>
         </div>
-        <div id="toBox">
-            
-        </div>
-    </div>
-    <div id="canvas">
-        <script type="text/javascript" src="mapgen.js"></script>
-    </div>
+    </main>
 </body>
 </html>

@@ -1,13 +1,103 @@
+
 html{
-    height: calc(160px * 10);
+    margin: 0;
 }
 body {
-    width: calc(240px * 13);
+    min-width: calc(240px * 13);
     margin: 0;
     background-color: white;
+}
+.headerStyle{
+    width: 100%;
+    height: auto;
+    background-color: #515151;
+    padding: 20px 50px;
+    box-sizing:border-box;
+    margin-left: auto;
+}
+
+.headerStyle .headerContainer{
+    box-sizing: border-box;
+    display: flex;
+    margin-left: auto;
+    /* max-width: calc(240px * 13); */
+}
+
+.contentShadow{
+    box-shadow: 0 0 10px 5px #51515151;
+}
+
+.headerStyle .pageTitle{
+    display: block;
+    color: white;
+    font-size: 3em;
+    line-height: 100%;
+    font-family: Times;
+    margin: auto 50px auto;
+    text-shadow: 0px 5px 5px #00000080;
+    padding: 0;
+}
+.iconContainer{
     display: flex;
     flex-direction: row;
+    margin-right: 100px;
+}
+
+.iconContainer .twitterIcon::before{
+    content: '\ea96';
+}
+.iconContainer .githubIcon::before{
+    content: '\eab0';
+}
+.iconContainer .youtubeIcon::before{
+    content: '\ea9d';
+}
+.iconContainer .nicoIcon::before{
+    content: '\e95b';
+}
+.iconContainer .discordIcon::before{
+    content: '\e900';
+}
+
+.iconContainer .iconStyle{
+    display: block;
+    font-family: 'icomoon';
+    font-weight: 400;
+    font-size: 1.65em;
+    color: #FFFFFF;
+    border: solid 2px #FFFFFF;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    padding: 10px;
+    margin: 10px;
+    box-sizing: border-box;
+    transition: 0.3s;
+}
+
+.iconContainer .iconLink{
+    border-radius: 50%;
+    background-color:#FFFF8000;
+    opacity: 0.6;
+    transition: 0.2s;
+}
+.iconContainer .iconLink:hover{
+    background-color:#FFFF8050;
+    opacity: 0.7;
+}
+
+main{
+    min-width: calc(240px * 13);
+    min-height: calc(160px * 11);
+    background-color: white;
     margin: 30px auto;
+}
+
+.mainContainer{
+    display: flex;
+    flex-direction: row;
+    margin: 0 auto;
+    max-width: calc(240px * 12.5);
 }
 
 h1 {
@@ -83,7 +173,7 @@ a{
     display: flex;
     flex-wrap: wrap;
     position: relative;
-
+    background-color: #313131;
 }
 .mapBlock{
     box-sizing: border-box;
@@ -126,7 +216,7 @@ a{
 }
 
 .mapUndefined{
-    background-color: #313131;
+    opacity: 0;
     border:none;
 }
 .mapCurrentRoom {
