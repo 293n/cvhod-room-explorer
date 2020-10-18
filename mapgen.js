@@ -14,7 +14,7 @@ let MapATableStr = new Array();
 let MapBTableStr = new Array();
 let toRoomTableStr = new Array();
 let PageRankTableStr = new Array();
-
+                            
 
 // initial values of RoomID
 if (!(parseInt(RoomID, 16) > 0)) {
