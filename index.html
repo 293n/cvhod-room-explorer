@@ -64,11 +64,32 @@
             </div>
         </div>
     </header>
-    <main>
+    <main id="mainBox">
         <div class="mainContainer">
             <div id="maps">
                 <div class="map contentShadow" id="mapA">
-        
+                    <div class="filterBox">
+                        <div id="fil0Box">
+                            <input type="radio" name="fil" id="fil0" onchange="mapFilter('None')" checked>
+                            <label for="fil0">None</label>
+                        </div>
+                        <div id="fil1Box">
+                            <input type="radio" name="fil" id="fil1" onchange="mapFilter('PageRank')">
+                            <label for="fil1">Pagerank</label>
+                        </div>
+                        <div id="fil2Box">
+                            <input type="radio" name="fil" id="fil2" onchange="mapFilter('ReversePageRank')">
+                            <label for="fil2">Reverse Pagerank</label>
+                        </div>
+                        <div id="fil3Box">
+                            <input type="radio" name="fil" id="fil3" onchange="mapFilter('Hub')">
+                            <label for="fil3">Hub</label>
+                        </div>
+                        <div id="fil4Box">
+                            <input type="radio" name="fil" id="fil4" onchange="mapFilter('Authorities')">
+                            <label for="fil4">Authorities</label>
+                        </div>
+                    </div>
                 </div>
                 <div class="map contentShadow" id="mapB">
                     

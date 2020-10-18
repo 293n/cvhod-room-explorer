@@ -6,11 +6,15 @@ let RoomTable = JSON.parse(JSON.stringify((new Array(11)).fill((new Array(8)).fi
 let MapATable = JSON.parse(JSON.stringify((new Array(41)).fill((new Array(65)).fill(""))));
 let MapBTable = JSON.parse(JSON.stringify((new Array(41)).fill((new Array(65)).fill(""))));
 let toRoomTable = JSON.parse(JSON.stringify((new Array(100)).fill((new Array(4)).fill(""))));
+let PageRankTable = JSON.parse(JSON.stringify((new Array(420)).fill((new Array(5)).fill(""))));
+let PageRank = new Array();//JSON.parse(JSON.stringify((new Array(419)).fill((new Array(4)).fill(0))));
 
 let RoomTableStr = new Array();
 let MapATableStr = new Array();
 let MapBTableStr = new Array();
 let toRoomTableStr = new Array();
+let PageRankTableStr = new Array();
+
 
 // initial values of RoomID
 if (!(parseInt(RoomID, 16) > 0)) {
@@ -24,7 +28,8 @@ selection.removeAllRanges();
 const promise = Promise.all([getCSV(RoomTable, RoomTableStr, './table/' + RoomID + '.csv'),
                              getCSV(MapATable, MapATableStr, './table/mapA.csv'),
                              getCSV(MapBTable, MapBTableStr, './table/mapB.csv'),
-                             getCSV(toRoomTable, toRoomTableStr, './table/to' + RoomID + '.csv')]);
+                             getCSV(toRoomTable, toRoomTableStr, './table/to' + RoomID + '.csv'),
+                             getCSV(PageRankTable, PageRankTableStr, './table/CVHoD_pagerank.csv')]);
 promise.then((xhrArray) => initialize());
 
 
@@ -41,6 +46,20 @@ function displayMap(MapTable, mapID){
             let div = document.createElement('div');
                 div.id = "div" + id;
                 div.className = "mapBlockContainer";
+                div.dataset.RoomID = MapTable[i][j];
+                if (MapTable[i][j] !== "00000000") {
+                    div.dataset.None = 1;
+                    div.dataset.PageRank = PageRank[MapTable[i][j]]['PageRank'];
+                    div.dataset.ReversePageRank = PageRank[MapTable[i][j]]['ReversePageRank'];
+                    div.dataset.Hub = PageRank[MapTable[i][j]]['Hub'];
+                    div.dataset.Authorities = PageRank[MapTable[i][j]]['Authorities'];
+                }else{
+                    div.dataset.None = 1;
+                    div.dataset.PageRank = 1;
+                    div.dataset.ReversePageRank = 1;
+                    div.dataset.Hub = 1;
+                    div.dataset.Authorities = 1;
+                }
 
             div.addEventListener("mouseover", function(e){
                 let childImg = this.firstElementChild.nextSibling;
@@ -121,14 +140,41 @@ function displayToBox(table){
     }
 }
 
+function pagerank(table){
+    for (let i = 1; i < table.length; i++){
+        PageRank[table[i][0]] = {}; //{table[0][j]: table[i][j]};
+        PageRank[table[i][0]]['PageRank'] = parseFloat(table[i][1]);
+        PageRank[table[i][0]]['ReversePageRank'] = parseFloat(table[i][2]);
+        PageRank[table[i][0]]['Hub'] = parseFloat(table[i][3]);
+        PageRank[table[i][0]]['Authorities'] = parseFloat(table[i][4]);
+    }
+}
+
+function mapFilter(str){
+    let cur = document.getElementById('mapA').firstElementChild.nextSibling.nextSibling;
+    while(cur != null){
+        cur.style.opacity = cur.dataset[str];
+        cur = cur.nextSibling;
+    }
+    cur = document.getElementById('mapB').firstElementChild.nextSibling;
+    while(cur != null){
+        cur.style.opacity = cur.dataset[str];
+        cur = cur.nextSibling;
+    }
+}
+
 // display maps and rooms
 function initialize(){
+    //page rank
+    pagerank(PageRankTable);
+
     let digit = 8;
     document.getElementById('RoomID').innerHTML = RoomID.toString();
     //document.getElementById('mapA').style.gridTemplateAreas = MapATableStr;
     displayMap(MapATable, 'mapA');
     displayMap(MapBTable, 'mapB');
     displayToBox(toRoomTable);
+
 
     // display rooms
     for (let i = 0; i < 11; i++){
@@ -214,6 +260,8 @@ function initialize(){
             document.getElementById(div.id).appendChild(room);
         }
     }
+    let main = document.getElementById('mainBox');
+    main.style.display = 'flex';
 }
 
 

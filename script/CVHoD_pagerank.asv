@@ -1,0 +1,83 @@
+%%
+clear all;
+dir = dir();
+
+tbl.name = 'CVHoD_pagerank';
+for i = 3:(length(dir) - 3)
+    fileID = fopen(dir(i).name,'r');
+    RoomHeader = strsplit(fgets(fileID),',');
+    CurRoomID = RoomHeader{1};
+    RoomXsize = min(str2num(RoomHeader{4}),7);
+    RoomYsize = str2num(RoomHeader{5});
+    tbl = setfield(tbl,strcat('to',CurRoomID),'RoomNum', i-2);
+    for Y = 1:(RoomYsize + 2)
+        RoomTable = strsplit(fgetl(fileID),',');
+        for X = 1:(RoomXsize + 2)
+            toRoom = hex2dec(RoomTable{X});
+            toRoomHeader = bitshift(bitand(toRoom, hex2dec('F0000000')), -28);
+            toRoom = dec2hex(bitand(toRoom, hex2dec('0FFFFFFF')),8);
+            if toRoomHeader >= 0 && toRoomHeader ~= 8 && toRoom ~= "00000000"
+                tbl = setfield(tbl,strcat('to',toRoom), strcat('from', CurRoomID), 'X', X-2);
+                tbl = setfield(tbl,strcat('to',toRoom), strcat('from', CurRoomID), 'Y', Y-2);
+            end
+        end
+    end
+    fclose(fileID);
+end
+
+%%
+% create adjacent matrix
+tblField = fieldnames(tbl);
+adjTable = zeros(length(tblField)-1);
+linkTable = cell(length(tblField), length(tblField));
+RoomNumCorr = cell(length(tblField)-1,2);
+for i=2:length(adjTable)+1 
+    tblFieldSub = fieldnames(getfield(tbl, tblField{i}));
+    RoomNumCorr{i-1,1} = erase(tblField{i},'to');
+    RoomNumCorr{i-1,2} = getfield(tbl, tblField{i}, 'RoomNum');
+    for j=1:length(tblFieldSub)
+        if tblFieldSub(j) ~= "RoomNum"
+            RoomID = erase(tblFieldSub(j), 'from');
+            RoomIdx = getfield(tbl, strcat('to',RoomID{1}), 'RoomNum');
+            CurRoomIdx = getfield(tbl, tblField{i}, 'RoomNum');
+            adjTable(CurRoomIdx,RoomIdx) = 1;
+            linkTable{CurRoomIdx,RoomIdx} = RoomID;
+%             [RoomNumCorr{i-1,1} RoomNumCorr{i-1,2} tblField{i} RoomID RoomIdx i-1 j]
+        end
+    end
+end
+
+RoomNumCorr = sortrows(RoomNumCorr);
+
+adjRevTable = adjTable';
+
+%% 
+% normalization columns
+for j=1:length(adjTable)
+    adjTable(:,j) = adjTable(:,j) / max(sum(adjTable(:,j)),1);
+    adjRevTable(:,j) = adjRevTable(:,j) / max(sum(adjRevTable(:,j)),1);
+end
+
+%%
+% eigen values and vectors
+[adjVect,adjEigD] = eig(adjTable);
+adjEig = abs(diag(adjEigD));
+pageRank = abs(adjVect(1,:))';
+
+[adjRevVect,adjRevEigD] = eig(adjRevTable);
+adjRevEig = abs(diag(adjRevEigD));
+revPageRank = abs(adjRevVect(1,:))';
+
+result = cell(length(RoomNumCorr), 3);
+
+pageRank = ones(length(adjTable)-2,1)'/(length(adjTable)-2);
+revPageRank = pageRank;
+for i = 1:10000
+    pageRank = pageRank * adjTable(1:end-2, 1:end-2)';
+    %revPageRank = adjRevTable * revPageRank;
+end
+for i = 1:length(RoomNumCorr)
+    result{i,1} = RoomNumCorr{i,1};
+    result{i,2} = pageRank(i);
+    result{i,3} = revPageRank(i);
+end

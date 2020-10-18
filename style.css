@@ -87,6 +87,7 @@ body {
 }
 
 main{
+    display: none;
     min-width: calc(240px * 13);
     min-height: calc(160px * 11);
     background-color: white;
@@ -237,6 +238,18 @@ a{
 }
 .mapBdefined{
     background-color: #518151;
+}
+
+.filterBox{
+    z-index: 10000;
+    background-color:white;
+    position: absolute;
+    right: 1%;
+    top: 1%;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border-radius: 5px;
 }
 
 #toBox {
