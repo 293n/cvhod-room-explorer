@@ -14,7 +14,9 @@ let MapATableStr = new Array();
 let MapBTableStr = new Array();
 let toRoomTableStr = new Array();
 let PageRankTableStr = new Array();
-                            
+
+
+
 
 // initial values of RoomID
 if (!(parseInt(RoomID, 16) > 0)) {
@@ -35,6 +37,22 @@ promise.then((xhrArray) => initialize());
 
 function zeroPadding(value, length){
     return value = ('00000000' + value).slice(-length);
+}
+
+function hex2rgba (hex, alpha = 1) {
+    let r = hex.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/i)
+    let c = null
+    if (r) {
+        c = r.slice(1,4).map(function(x) { return parseInt(x, 16) })
+    }
+    r = hex.match(/^#([0-9a-f])([0-9a-f])([0-9a-f])$/i)
+    if (r) {
+        c = r.slice(1,4).map(function(x) { return 0x11 * parseInt(x, 16) })
+    }
+    if (!c) {
+        return null
+    }
+    return `rgba(${c[0]}, ${c[1]}, ${c[2]}, ${alpha})`
 }
 
 // 
@@ -140,27 +158,58 @@ function displayToBox(table){
     }
 }
 
+function logisticFnc(x, a, b){
+    return 1/(1+Math.exp(-a*(x-b)));
+}
+
 function pagerank(table){
+    //set logistic parameters
+    let loga = 20;
+    let logb = 0.2;
     for (let i = 1; i < table.length; i++){
         PageRank[table[i][0]] = {}; //{table[0][j]: table[i][j]};
-        PageRank[table[i][0]]['PageRank'] = parseFloat(table[i][1]);
-        PageRank[table[i][0]]['ReversePageRank'] = parseFloat(table[i][2]);
-        PageRank[table[i][0]]['Hub'] = parseFloat(table[i][3]);
-        PageRank[table[i][0]]['Authorities'] = parseFloat(table[i][4]);
+        PageRank[table[i][0]]['PageRank'] = parseFloat(logisticFnc(table[i][1],loga, logb));
+        PageRank[table[i][0]]['ReversePageRank'] = parseFloat(logisticFnc(table[i][2],loga, logb));
+        PageRank[table[i][0]]['Hub'] = parseFloat(logisticFnc(table[i][3],loga, logb));
+        PageRank[table[i][0]]['Authorities'] = parseFloat(logisticFnc(table[i][4], loga, logb));
+        // PageRank[table[i][0]]['PageRank'] = parseFloat(table[i][1]);
+        // PageRank[table[i][0]]['ReversePageRank'] = parseFloat(table[i][2]);
+        // PageRank[table[i][0]]['Hub'] = parseFloat(table[i][3]);
+        // PageRank[table[i][0]]['Authorities'] = parseFloat(table[i][4]);
     }
 }
 
 function mapFilter(str){
     let cur = document.getElementById('mapA').firstElementChild.nextSibling.nextSibling;
-    while(cur != null){
-        cur.style.opacity = cur.dataset[str];
+    while(cur != null){ 
+        let curLink = cur.firstElementChild;
+        let curLinkStyle = getComputedStyle(curLink, 'null');
+        let curColor = curLinkStyle.getPropertyValue("background-color");
+        
+        curLink.style.backgroundColor = setAlphaChannel(curColor, cur.dataset[str]);
         cur = cur.nextSibling;
     }
     cur = document.getElementById('mapB').firstElementChild.nextSibling;
     while(cur != null){
-        cur.style.opacity = cur.dataset[str];
+        let curLink = cur.firstElementChild;
+        let curLinkStyle = getComputedStyle(curLink, 'null');
+        let curColor = curLinkStyle.getPropertyValue("background-color");
+    
+        curLink.style.backgroundColor = setAlphaChannel(curColor, cur.dataset[str]);
         cur = cur.nextSibling;
     }
+}
+
+function setAlphaChannel(str, alpha){
+    let rgbaValue = str.split('(');
+        rgbaValue = rgbaValue[1].split(')');
+        rgbaValue = rgbaValue[0].split(',');
+    let colorStyle = "rgba(";
+    for (let i=0;i < 3; i++){
+        colorStyle = colorStyle + rgbaValue[i] + ",";
+    }
+    colorStyle = colorStyle  + alpha + ")";
+    return colorStyle;
 }
 
 // display maps and rooms

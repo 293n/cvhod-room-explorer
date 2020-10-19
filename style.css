@@ -184,6 +184,7 @@ a{
     flex-wrap: wrap;
     position: relative;
     background-color: #313131;
+    overflow: hidden;
 }
 .mapBlock{
     box-sizing: border-box;
@@ -219,6 +220,7 @@ a{
     z-index: 2;
     opacity: 0;
     visibility: hidden;
+    opacity:1;
 }
 
 .mapBlock:hover{
@@ -227,28 +229,33 @@ a{
 
 .mapUndefined{
     opacity: 0;
-    border:none;
+    border: none;
+    background-color: #00000000;
 }
 .mapCurrentRoom {
-    background-color: #FF5151;
+    background-color: #FF5151FF;
 }
 .mapAdefined{
-    background-color: #515181;
+    background-color: #515181FF;
 }
 .mapBdefined{
-    background-color: #518151;
+    background-color: #518151FF;
 }
 
 .filterBox{
     z-index: 10000;
     background-color:white;
     position: absolute;
-    right: 1%;
+    right: -19%;
     top: 1%;
     display: flex;
     flex-direction: column;
     padding: 5px;
     border-radius: 5px;
+    transition: 0.7s;
+}
+.filterBox:hover {
+    right: 1%;
 }
 
 #toBox {
