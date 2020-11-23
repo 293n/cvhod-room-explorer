@@ -13,12 +13,14 @@ body {
     padding: 20px 50px;
     box-sizing:border-box;
     margin-left: auto;
+    max-height: 120px;
 }
 
 .headerStyle .headerContainer{
     box-sizing: border-box;
     display: flex;
     margin-left: auto;
+    max-height: 70px;
     /* max-width: calc(240px * 13); */
 }
 
@@ -57,6 +59,41 @@ body {
 .iconContainer .discordIcon::before{
     content: '\e900';
 }
+.iconContainer .discordIcon:hover + .balloon3-top{
+    visibility: visible;
+}
+
+.balloon3-top {
+    position: relative;
+    display: block;
+    margin: 0;
+    top: -80px;
+    left: 80px;
+    padding: 0 5px;
+    width: 180px;
+    height: 90px;
+    line-height: 90px;
+    text-align: center;
+    color: #FFF;
+    font-size: 20px;
+    font-weight: bold;
+    background: #717171;
+    border-radius: 20px;
+    box-sizing: border-box;
+    visibility: hidden;
+    z-index: 0;
+  }
+  
+  .balloon3-top:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 0%;
+    margin-left: -15px;
+    border: 15px solid transparent;
+    border-bottom: 15px solid #717171;
+    z-index: 0;
+  }
 
 .iconContainer .iconStyle{
     display: block;
@@ -72,6 +109,7 @@ body {
     margin: 10px;
     box-sizing: border-box;
     transition: 0.3s;
+    position: relative;
 }
 
 .iconContainer .iconLink{
@@ -79,6 +117,7 @@ body {
     background-color:#FFFF8000;
     opacity: 0.6;
     transition: 0.2s;
+    max-width: 70px;
 }
 .iconContainer .iconLink:hover{
     background-color:#FFFF8050;
